@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return ['Laravel' => app()->version()];
+Route::middleware('auth:api')-> get('/', function () {
+    return response()->json(['message' => 'x', 'user'=> auth()->user()]);
 });
 
-require __DIR__.'/auth.php';

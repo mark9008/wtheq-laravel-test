@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Repositories\UserRepository;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Responses\APIResponse;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class RegisteredUserController extends Controller
 {
@@ -18,24 +20,21 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): Response
+    public function signup(RegisterRequest $request): JsonResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+//        return APIResponse::SuccessResponse('User Registered successfully, Confirmation mail has been sent');
+        $data = $request->validated();
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $user = (new UserRepository())->createUser(
+            $data['email'],
+            $data['name'],
+            $data['password'],
+            $data['is_active'],
+            $data['type']);
+
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        return response()->noContent();
+        return APIResponse::CreatedSuccessfully(UserResource::make($user), 'User Registered successfully, Confirmation mail has been sent');
     }
 }

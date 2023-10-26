@@ -4,35 +4,45 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\Request;
+use App\Http\Responses\APIResponse;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
 {
+    protected $user;
+
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): Response
+    public function login(LoginRequest $request): JsonResponse
     {
-        $request->authenticate();
-
-        $request->session()->regenerate();
-
-        return response()->noContent();
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $request->authenticate();
+            $this->user = $request->user();
+            $JWTToken = Auth::guard('api')->login($this->user);
+            return APIResponse::LoginResponse($JWTToken, $this->user);
+        }
+        return APIResponse::ErrorsResponse(__function__, 'Unauthorized', null, Response::HTTP_UNAUTHORIZED);
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): Response
+    public function logout(): JsonResponse
     {
-        Auth::guard('web')->logout();
+        try {
+            auth('api')->logout();
+            return APIResponse::LogoutResponse();
+        } catch (Exception $exception) {
+            return APIResponse::ErrorsResponse(__function__, $exception->getMessage(), $exception);
+        }
+    }
 
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return response()->noContent();
+    public function login_redirect(): JsonResponse
+    {
+        return APIResponse::ErrorsResponse('Go to login page (/api/auth/login)', 'Unauthorized', null, Response::HTTP_UNAUTHORIZED);
     }
 }
