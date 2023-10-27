@@ -25,7 +25,7 @@ class RegisteredUserController extends Controller
 //        return APIResponse::SuccessResponse('User Registered successfully, Confirmation mail has been sent');
         $data = $request->validated();
 
-        $user = (new UserRepository())->createUser(
+        $user = (new UserRepository())->create(
             $data['email'],
             $data['name'],
             $data['password'],
@@ -35,6 +35,6 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        return APIResponse::CreatedSuccessfully(UserResource::make($user), 'User Registered successfully, Confirmation mail has been sent');
+        return APIResponse::CreatedSuccessfully(UserResource::make($user), 'User Registered successfully');
     }
 }

@@ -8,14 +8,55 @@ use Carbon\Carbon;
 class UserRepository
 {
     /**
+     * User variable to store user model
+     * @var User
+     */
+    protected User $user;
+
+    /**
+     * List function to list all users
+     * @param int $id
+     * @param array $relations
+     * @return User
+     */
+    public function list(): array
+    {
+        return User::all();
+    }
+
+    /**
+     * Get function to get user by id
+     * @param int $id
+     * @return User
+     */
+    public function get(int $id): User
+    {
+        if (!isset($this->user)) $this->set($id);
+        return $this->user;
+    }
+
+    /**
+     * Set function to set the repository user by id
+     * @param int $id
+     * @return User
+     */
+    public function set(int $id): User
+    {
+        if (empty($this->user) || $id != $this->user->id)
+            $this->user = User::findOrFail($id);
+        return $this->user;
+    }
+
+    /**
+     * Create function to create user with given data
      * @param string $email
      * @param string $name
      * @param null|string $password
-     * @param string|null $country
-     * @param bool $MakeVerified
+     * @param bool $is_active
+     * @param string $type
      * @return User
      */
-    public function createUser(string $email, string $name, string $password, bool $is_active = true, string $type="normal"): User
+    public function create(string $email, string $name, string $password, bool $is_active = true, string $type = "normal"): User
     {
         $user = User::firstOrCreate(['email' => $email], [
             'email' => $email,
@@ -27,5 +68,29 @@ class UserRepository
         ]);
         return $user;
 
+    }
+
+    /**
+     * Update function to update user by id with given data
+     * @param int $id
+     * @param array $data
+     * @return User
+     */
+    public function update(int $id, array $data): User
+    {
+        $this->set($id);
+        $this->user->update($data);
+        return $this->user;
+    }
+
+    /**
+     * Delete function to delete user by id
+     * @param int $id
+     * @return bool
+     */
+    public function delete(int $id): bool
+    {
+        $this->set($id);
+        return $this->user->delete();
     }
 }

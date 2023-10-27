@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -18,9 +20,9 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 |
 */
 
-Route::middleware(['auth:api'])->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware(['auth:api'])->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 Route::group(['guard' => 'api'],
     function () {
@@ -31,6 +33,24 @@ Route::group(['guard' => 'api'],
                 Route::post('/signup', [RegisteredUserController::class, 'signup'])->name('register');
                 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
                 Route::post('/logout', [AuthenticatedSessionController::class, 'logout'])->name('logout');
+                Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
             });
+
+        Route::group(['prefix' => 'profile'],
+            function () {
+                Route::get('/user', [UserController::class, 'show'])->name('user');
+                Route::post('/update', [UserController::class, 'update'])->name('user.update');
+                Route::post('/delete', [UserController::class, 'destroy'])->name('user.delete');
+                Route::get('/list', [UserController::class, 'index'])->name('user.list');
+            });
+
+        Route::group(['prefix' => 'products']
+            , function () {
+                Route::get('/list', [ProductController::class, 'index'])->middleware('custom.product.pricing')->name('product.list');
+                Route::get('/{id}', [ProductController::class, 'show'])->middleware('custom.product.pricing')->name('product.show');
+                Route::post('/create', [ProductController::class, 'store'])->name('product.create');
+                Route::post('/update/{id}', [ProductController::class, 'update'])->name('product.update');
+                Route::post('/delete/{id}', [ProductController::class, 'destroy'])->name('product.delete');
+            }
+        );
     });
-Route::middleware('auth:api')->get('/auth/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
