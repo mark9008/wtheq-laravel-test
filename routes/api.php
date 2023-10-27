@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -33,6 +32,7 @@ Route::group(['guard' => 'api'],
 Route::group(['middleware' => 'auth:api'], function () {
     Route::group(['prefix' => 'auth'],
         function () {
+            Route::get('/refresh-token', [AuthenticatedSessionController::class, 'refresh_token'])->name('refresh.token');
             Route::post('/logout', [AuthenticatedSessionController::class, 'logout'])->name('logout');
             Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
         });

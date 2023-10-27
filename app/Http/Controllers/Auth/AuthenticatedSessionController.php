@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Responses\APIResponse;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
 {
-    protected $user;
+    protected User $user;
 
     /**
      * Handle an incoming authentication request.
@@ -46,5 +47,16 @@ class AuthenticatedSessionController extends Controller
     public function login_redirect(): JsonResponse
     {
         return APIResponse::ErrorsResponse('Go to login page (/api/auth/login)', 'Unauthorized', null, Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function refresh_token(): JsonResponse
+    {
+        try {
+            $this->user = auth('api')->user();
+            $JWTToken = auth('api')->refresh();
+            return APIResponse::LoginResponse($JWTToken, $this->user);
+        } catch (Exception $exception) {
+            return APIResponse::ErrorsResponse(__function__, $exception->getMessage(), $exception);
+        }
     }
 }
