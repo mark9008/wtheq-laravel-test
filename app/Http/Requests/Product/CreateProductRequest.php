@@ -22,4 +22,17 @@ class CreateProductRequest extends FormRequest
     {
         return true;
     }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Name is required',
+            'image.image' => 'Image must be an image',
+            'image.max' => 'Image size must be less than 1MB',
+            'price.required' => 'Price is required',
+            'price.numeric' => 'Price must be a number',
+            'slug.required' => 'Slug is required',
+            'is_active.boolean' => 'Is Active must be a boolean',
+        ];
+    }
 }

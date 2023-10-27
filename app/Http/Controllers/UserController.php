@@ -40,8 +40,11 @@ class UserController extends Controller
 
     public function destroy(): JsonResponse
     {
-        $user = (new UserRepository())->get(auth('api')->user()->id);
-        if ($user->delete())
+        $user = auth('api')->user();
+        if ($user->type != 'gold')
+            return APIResponse::ErrorsResponse('You are not allowed to delete products', '', 403);
+        $deleted = (new UserRepository())->delete($user->id);
+        if ($deleted)
             return APIResponse::SuccessResponse('User deleted successfully');
         return APIResponse::ErrorsResponse('Error deleting user', '', 500);
     }
