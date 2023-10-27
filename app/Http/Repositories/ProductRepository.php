@@ -17,7 +17,8 @@ class ProductRepository
      */
     public function list()
     {
-        return Product::all();
+        // return only active products
+        return Product::where('is_active', true)->get();
     }
 
     /** Get function to get product by id

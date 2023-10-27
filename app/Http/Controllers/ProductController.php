@@ -41,10 +41,10 @@ class ProductController extends Controller
     public function destroy($id): JsonResponse
     {
         if (auth('api')->user()->type != 'gold')
-            return APIResponse::ErrorsResponse('You are not allowed to delete products', '', 403);
+            return APIResponse::ErrorsResponse('You are not allowed to delete products', '', status: 403);
         $id = (int)$id;
         if ((new ProductRepository())->delete($id))
             return APIResponse::SuccessResponse('Product deleted successfully');
-        return APIResponse::ErrorsResponse('Error deleting product', '', 500);
+        return APIResponse::ErrorsResponse('Error deleting product', '', status: 500);
     }
 }

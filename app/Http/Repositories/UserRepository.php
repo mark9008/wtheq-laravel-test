@@ -20,7 +20,7 @@ class UserRepository
      */
     public function list()
     {
-        return User::all();
+        return User::where('is_active', true)->get();
     }
 
     /**

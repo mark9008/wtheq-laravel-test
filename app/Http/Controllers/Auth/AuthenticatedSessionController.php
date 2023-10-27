@@ -23,9 +23,11 @@ class AuthenticatedSessionController extends Controller
             $request->authenticate();
             $this->user = $request->user();
             $JWTToken = Auth::guard('api')->login($this->user);
+            if (!auth('api')->user()->is_active)
+                return APIResponse::ErrorsResponse(__function__, 'Your user is currently inactive', null, Response::HTTP_UNAUTHORIZED);
             return APIResponse::LoginResponse($JWTToken, $this->user);
         }
-        return APIResponse::ErrorsResponse(__function__, 'Unauthorized', null, Response::HTTP_UNAUTHORIZED);
+        return APIResponse::ErrorsResponse(__function__, 'Invalid credentials', null, Response::HTTP_UNAUTHORIZED);
     }
 
     /**

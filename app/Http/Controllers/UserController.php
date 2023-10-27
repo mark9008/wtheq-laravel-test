@@ -42,10 +42,10 @@ class UserController extends Controller
     {
         $user = auth('api')->user();
         if ($user->type != 'gold')
-            return APIResponse::ErrorsResponse('You are not allowed to delete products', '', 403);
+            return APIResponse::ErrorsResponse('You are not allowed to delete your user', '', status: 403);
         $deleted = (new UserRepository())->delete($user->id);
         if ($deleted)
             return APIResponse::SuccessResponse('User deleted successfully');
-        return APIResponse::ErrorsResponse('Error deleting user', '', 500);
+        return APIResponse::ErrorsResponse('Error deleting user', '', status: 500);
     }
 }
