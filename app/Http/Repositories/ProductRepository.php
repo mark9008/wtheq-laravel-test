@@ -15,7 +15,7 @@ class ProductRepository
     /** List function to list all products
      * @return array
      */
-    public function list(): array
+    public function list()
     {
         return Product::all();
     }

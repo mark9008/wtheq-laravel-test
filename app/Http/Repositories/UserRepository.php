@@ -2,6 +2,8 @@
 
 namespace App\Http\Repositories;
 
+use App\Http\Resources\UserResource;
+use App\Http\Responses\APIResponse;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -15,11 +17,8 @@ class UserRepository
 
     /**
      * List function to list all users
-     * @param int $id
-     * @param array $relations
-     * @return User
      */
-    public function list(): array
+    public function list()
     {
         return User::all();
     }
@@ -51,7 +50,7 @@ class UserRepository
      * Create function to create user with given data
      * @param string $email
      * @param string $name
-     * @param null|string $password
+     * @param string $password
      * @param bool $is_active
      * @param string $type
      * @return User

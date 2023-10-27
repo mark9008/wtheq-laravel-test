@@ -20,10 +20,6 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 |
 */
 
-//Route::middleware(['auth:api'])->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 Route::group(['guard' => 'api'],
     function () {
         Route::group(['prefix' => 'auth'],
@@ -32,25 +28,29 @@ Route::group(['guard' => 'api'],
                 Route::post('/login', [AuthenticatedSessionController::class, 'login'])->name('login');
                 Route::post('/signup', [RegisteredUserController::class, 'signup'])->name('register');
                 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
-                Route::post('/logout', [AuthenticatedSessionController::class, 'logout'])->name('logout');
-                Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
             });
-
-        Route::group(['prefix' => 'profile'],
-            function () {
-                Route::get('/user', [UserController::class, 'show'])->name('user');
-                Route::post('/update', [UserController::class, 'update'])->name('user.update');
-                Route::post('/delete', [UserController::class, 'destroy'])->name('user.delete');
-                Route::get('/list', [UserController::class, 'index'])->name('user.list');
-            });
-
-        Route::group(['prefix' => 'products']
-            , function () {
-                Route::get('/list', [ProductController::class, 'index'])->middleware('custom.product.pricing')->name('product.list');
-                Route::get('/{id}', [ProductController::class, 'show'])->middleware('custom.product.pricing')->name('product.show');
-                Route::post('/create', [ProductController::class, 'store'])->name('product.create');
-                Route::post('/update/{id}', [ProductController::class, 'update'])->name('product.update');
-                Route::post('/delete/{id}', [ProductController::class, 'destroy'])->name('product.delete');
-            }
-        );
     });
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::group(['prefix' => 'auth'],
+        function () {
+            Route::post('/logout', [AuthenticatedSessionController::class, 'logout'])->name('logout');
+            Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
+        });
+
+    Route::group(['prefix' => 'profile'],
+        function () {
+            Route::get('/user', [UserController::class, 'show'])->name('user');
+            Route::get('/list', [UserController::class, 'index'])->name('user.list');
+            Route::post('/update', [UserController::class, 'update'])->name('user.update');
+            Route::delete('/delete', [UserController::class, 'destroy'])->name('user.delete');
+        });
+
+    Route::group(['prefix' => 'products']
+        , function () {
+            Route::get('/list', [ProductController::class, 'index'])->middleware('custom.product.pricing')->name('product.list');
+            Route::get('/{id}/get', [ProductController::class, 'show'])->middleware('custom.product.pricing')->name('product.show');
+            Route::post('/create', [ProductController::class, 'store'])->name('product.create');
+            Route::post('/{id}/update', [ProductController::class, 'update'])->name('product.update');
+            Route::delete('/{id}/delete', [ProductController::class, 'destroy'])->name('product.delete');
+        });
+});
