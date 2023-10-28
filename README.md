@@ -81,10 +81,11 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 - Example Request:
  ```http request
+<pre>
     POST /api/auth/register
     Content-Type: application/json
     accept: application/json
-    
+</pre>
     {
         "name":"Mark",
         "email":"mark@example.com",
