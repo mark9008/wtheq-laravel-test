@@ -297,7 +297,17 @@ I have implemented the repository design pattern in this project to separate dat
 
 ## Custom Pricing Middleware
 
-I have implemented a custom middleware to apply the pricing logic to the product prices. It is registered in the `Kernel.php` file in the `app/Http` directory. It edits the response returned by the API to apply the pricing logic to the product prices based on the user type. You can find it [here](/app/Http/Middleware/CustomProductPricingMiddleware.php).
+I have implemented a custom middleware to apply the pricing logic to the product prices. It is registered in the `Kernel.php` file in the `app/Http` directory. It edits the response returned by the API to apply the pricing logic to the product prices based on the user type. You can find it [here](/app/Http/Middleware/CustomProductPricingMiddleware.php). It requires the [custom_pricing.php](/config/custom_pricing.php) file in the config directory to be configured with the pricing logic.
+The custom_pricing.php file contains an array of user types and their corresponding discounts. It is used by the middleware to apply the pricing logic to the product prices. It should look like that:
+```php
+<?php
+
+return [
+    'normal' => 0,
+    'silver' => 5,
+    'gold' => 10
+];
+```
 
 ## Authors
 
