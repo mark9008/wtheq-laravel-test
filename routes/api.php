@@ -39,8 +39,9 @@ Route::middleware('auth:api')->group(function () {
     Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
         Route::get('/user', [UserController::class, 'show'])->name('user');
         Route::get('/list', [UserController::class, 'index'])->name('user.list');
+        Route::get('/{type}/list', [UserController::class, 'searchByType'])->name('user.list.type');
         Route::post('/update', [UserController::class, 'update'])->name('user.update');
-        Route::delete('/delete', [UserController::class, 'destroy'])->name('user.delete');
+        Route::delete('/{id}/delete', [UserController::class, 'destroy'])->name('user.delete');
     });
 
     // Group for product routes with custom product pricing middleware
@@ -48,7 +49,7 @@ Route::middleware('auth:api')->group(function () {
         Route::middleware('custom.product.pricing')->group(function () {
             Route::get('/list', [ProductController::class, 'index'])->name('list');
             Route::get('/{id}/get', [ProductController::class, 'show'])->name('show');
-            Route::get('/{ids}/search', [ProductController::class, 'searchByIds'])->name('list.ids');
+            Route::get('/search', [ProductController::class, 'searchByIds'])->name('list.ids');
         });
 
         Route::post('/create', [ProductController::class, 'store'])->name('create');

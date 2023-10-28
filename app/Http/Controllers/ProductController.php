@@ -30,8 +30,9 @@ class ProductController extends Controller
         return APIResponse::DataResponse(new ProductResource($product));
     }
 
-    public function searchByIds($ids): JsonResponse
+    public function searchByIds(Request $request): JsonResponse
     {
+        $ids = $request->query('ids', '');
         $ids = explode(',', $ids);
         $products = (new ProductRepository())->searchByIds($ids);
         return APIResponse::DataResponse(ProductResource::collection($products));

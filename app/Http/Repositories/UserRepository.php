@@ -2,8 +2,6 @@
 
 namespace App\Http\Repositories;
 
-use App\Http\Resources\UserResource;
-use App\Http\Responses\APIResponse;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -17,14 +15,19 @@ class UserRepository
 
     /**
      * List function to list all users
+     * @param bool $active // if true, only active users will be returned
      */
     public function list($active = true)
     {
-        // return only active users
-        if ($active) return User::where('is_active', true)->get();
-        // return all users
-        return User::all();
+        $query = User::query();
+
+        if ($active) {
+            $query->where('is_active', true);
+        }
+
+        return $query->get();
     }
+
 
     /**
      * Get function to get user by id
@@ -60,7 +63,7 @@ class UserRepository
      */
     public function create(string $email, string $name, string $password, bool $is_active = true, string $type = "normal"): User
     {
-        $user = User::firstOrCreate(['email' => $email], [
+        return User::firstOrCreate(['email' => $email], [
             'email' => $email,
             'name' => $name,
             'password' => bcrypt($password) ?? bcrypt(time()),
@@ -68,8 +71,6 @@ class UserRepository
             'type' => $type,
             'email_verified_at' => Carbon::now(),
         ]);
-        return $user;
-
     }
 
     /**
@@ -93,6 +94,19 @@ class UserRepository
     public function delete(int $id): bool
     {
         $this->set($id);
-        return $this->user->delete();
+        return $this->user->update(['is_active' => false]);
+    }
+
+    /**
+     * Search by User Type
+     * @param string $type
+     * @param bool $active  // if true, only active users will be returned
+     */
+    public function searchByType(string $type, bool $active = true)
+    {
+        $query = User::where('type', '=', $type);
+        if ($active)
+            $query->where('is_active', '=', true);
+        return $query->get();
     }
 }

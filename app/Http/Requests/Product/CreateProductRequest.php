@@ -13,7 +13,6 @@ class CreateProductRequest extends FormRequest
             'description' => ['nullable'],
             'image' => ['nullable', 'image', 'max:1024'],
             'price' => ['required', 'numeric'],
-            'slug' => ['required'],
             'is_active'=> ['nullable', 'boolean'],
         ];
     }
@@ -31,7 +30,6 @@ class CreateProductRequest extends FormRequest
             'image.max' => 'Image size must be less than 1MB',
             'price.required' => 'Price is required',
             'price.numeric' => 'Price must be a number',
-            'slug.required' => 'Slug is required',
             'is_active.boolean' => 'Is Active must be a boolean',
         ];
     }

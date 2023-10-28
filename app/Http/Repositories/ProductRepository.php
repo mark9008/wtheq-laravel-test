@@ -3,7 +3,6 @@
 namespace App\Http\Repositories;
 
 use App\Models\Product;
-use PhpParser\Node\Expr\Array_;
 
 class ProductRepository
 {
@@ -13,13 +12,17 @@ class ProductRepository
     protected Product $product;
 
     /** List function to list all products
+     * @param bool $active // if true, only active products will be returned
      */
     public function list(bool $active = true)
     {
-        // return only active products
-        if ($active) return Product::where('is_active', true)->get();
-        // return all products
-        return Product::all();
+        $query = Product::query();
+
+        if ($active) {
+            $query->where('is_active', true);
+        }
+
+        return $query->get();
     }
 
     /** Get function to get product by id

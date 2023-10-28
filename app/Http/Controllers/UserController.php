@@ -41,14 +41,22 @@ class UserController extends Controller
         return APIResponse::DataResponse(UserResource::make($user));
     }
 
-    public function destroy(): JsonResponse
+    public function destroy($id): JsonResponse
     {
         $user = auth('api')->user();
         if ($user->type != 'gold')
-            return APIResponse::ErrorsResponse('You are not allowed to delete your user', '', status: 403);
-        $deleted = (new UserRepository())->delete($user->id);
+            return APIResponse::ErrorsResponse('You are not allowed to delete users', '', status: 403);
+        $deleted = (new UserRepository())->delete($id);
         if ($deleted)
             return APIResponse::SuccessResponse('User deleted successfully');
         return APIResponse::ErrorsResponse('Error deleting user', '', status: 500);
+    }
+
+    public function searchByType(Request $request,$type): JsonResponse
+    {
+        // get active_only query parameter
+        $active_only = $request->query('active_only', true);
+        $users = (new UserRepository())->searchByType($type,$active_only);
+        return APIResponse::DataResponse(UserResource::collection($users));
     }
 }
