@@ -73,6 +73,25 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 # Usage
 
+## Testing the API
+
+To simplify the testing of the API, you can use the provided Postman collection and [Swagger documentation](/swagger.yaml).
+
+### Postman Collection
+
+I have created a Postman collection to help you test the API using the Postman application. If you don't have Postman installed, you can [download it here](https://www.postman.com/downloads/).
+
+Follow these steps to use the Postman collection:
+
+1. Download and install the Postman application if you haven't already.
+
+2. Import the Postman collection into Postman:
+    - Download the Postman collection JSON file: [Postman Collection](/Wtheq-laravel-test.postman_collection.json)
+    - Open Postman and click the "Import" button.
+    - Upload the downloaded JSON file.
+
+3. Once imported, you'll have access to a set of pre-configured requests for testing the API. Feel free to customize these requests to match your testing needs.
+
 ## Authentication
 
 ### User Registration
