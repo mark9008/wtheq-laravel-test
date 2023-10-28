@@ -7,15 +7,18 @@ use App\Http\Requests\Profile\EditUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Responses\APIResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $users = (new UserRepository())->list();
+        // get active_only query parameter
+        $active_only = $request->query('active_only', true);
+        $users = (new UserRepository())->list($active_only);
         return APIResponse::DataResponse(UserResource::collection($users));
     }
 

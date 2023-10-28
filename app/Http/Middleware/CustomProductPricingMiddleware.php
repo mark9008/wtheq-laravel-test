@@ -4,9 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use function Laravel\Prompts\select;
 
-class CustomPricingMiddleware
+
+class CustomProductPricingMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
@@ -15,6 +15,7 @@ class CustomPricingMiddleware
 
         // Get the response from the next middleware in the chain
         $response = $next($request);
+
         // Get the content of the response (the JSON data)
         $content = $response->getContent();
 
@@ -23,17 +24,15 @@ class CustomPricingMiddleware
 
         // Check if the data is not null and it has a 'data' key
         if ($data !== null && array_key_exists('data', $data)) {
-            // Get RequestURI
-            $requestURI = $request->getRequestUri();
-            // Check if request contains list of products or only one product
-            if (str_contains($requestURI, 'list')) {
+            // Check if response contains list of products or only one product
+            if (isset($data['data']['price'])) {
+                // Calculate and update the price (modify the data as needed)
+                $data['data'] = $this->calculatePrice($data['data'], $user_type);
+            } else {
                 // Calculate and update the prices (modify the data as needed)
                 foreach ($data['data'] as &$product) {
-                    $product['price'] = $this->calculatePrice($product['price'], $user_type);
+                    $product = $this->calculatePrice($product, $user_type);
                 }
-            } else {
-                // Calculate and update the price (modify the data as needed)
-                $data['data']['price'] = $this->calculatePrice($data['data']['price'], $user_type);
             }
 
             // Encode the modified data back to JSON
@@ -46,13 +45,26 @@ class CustomPricingMiddleware
         return $response;
     }
 
-    private function calculatePrice($price, $user_type): float
+    /**
+     * Calculate the price and discount
+     * @param array $data
+     * @param string $user_type
+     * @return array
+     */
+    private function calculatePrice(array $data, string $user_type): array
     {
+        // Set the original price
+        $data['original_price'] = $data['price'];
+
         if ($user_type === 'gold') {
-            $price *= 0.9; // 10% discount for gold users
+            $data['price'] *= 0.9; // 10% discount for gold users
+            $data['discount'] = '10%'; // add discount field to the response
         } elseif ($user_type === 'silver') {
-            $price *= 0.95; // 5% discount for silver users
+            $data['price'] *= 0.95; // 5% discount for silver users
+            $data['discount'] = '5%'; // add discount field to the response
+        } else {
+            $data['discount'] = '0%'; // add discount field to the response
         }
-        return $price;
+        return $data;
     }
 }

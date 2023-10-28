@@ -13,12 +13,13 @@ class ProductRepository
     protected Product $product;
 
     /** List function to list all products
-     * @return array
      */
-    public function list()
+    public function list(bool $active = true)
     {
         // return only active products
-        return Product::where('is_active', true)->get();
+        if ($active) return Product::where('is_active', true)->get();
+        // return all products
+        return Product::all();
     }
 
     /** Get function to get product by id
@@ -29,6 +30,14 @@ class ProductRepository
     {
         if (!isset($this->product)) $this->set($id);
         return $this->product;
+    }
+
+    /** Function to search for multiple products by ids
+     * @param array $ids
+     */
+    public function searchByIds(array $ids)
+    {
+        return Product::whereIn('id', $ids)->get();
     }
 
     /** Set function to set the repository product by id
@@ -56,7 +65,7 @@ class ProductRepository
      * @param array $data
      * @return Product
      */
-    public function update(int $id,array $data): Product
+    public function update(int $id, array $data): Product
     {
         $this->set($id);
         $this->product->update($data);

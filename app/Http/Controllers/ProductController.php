@@ -8,12 +8,17 @@ use App\Http\Requests\Product\EditProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Responses\APIResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $products = (new ProductRepository())->list();
+        // get active_only query parameter
+        $active_only = $request->query('active_only', true);
+        // get products from repository
+        $products = (new ProductRepository())->list($active_only);
+        // return products
         return APIResponse::DataResponse(ProductResource::collection($products));
 
     }
@@ -23,6 +28,13 @@ class ProductController extends Controller
         $id = (int)$id;
         $product = (new ProductRepository())->get($id);
         return APIResponse::DataResponse(new ProductResource($product));
+    }
+
+    public function searchByIds($ids): JsonResponse
+    {
+        $ids = explode(',', $ids);
+        $products = (new ProductRepository())->searchByIds($ids);
+        return APIResponse::DataResponse(ProductResource::collection($products));
     }
 
     public function store(CreateProductRequest $request): JsonResponse

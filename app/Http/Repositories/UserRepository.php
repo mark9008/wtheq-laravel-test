@@ -18,9 +18,12 @@ class UserRepository
     /**
      * List function to list all users
      */
-    public function list()
+    public function list($active = true)
     {
-        return User::where('is_active', true)->get();
+        // return only active users
+        if ($active) return User::where('is_active', true)->get();
+        // return all users
+        return User::all();
     }
 
     /**
