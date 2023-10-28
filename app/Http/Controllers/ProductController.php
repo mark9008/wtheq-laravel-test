@@ -115,7 +115,7 @@ class ProductController extends Controller
         $product = $productRepo->update($id, $productData);
 
         // return a data response with the updated product
-        return APIResponse::DataResponse(ProductResource::make($product));
+        return APIResponse::UpdatedSuccessfully(ProductResource::make($product));
     }
 
     /**

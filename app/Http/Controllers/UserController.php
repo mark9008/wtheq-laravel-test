@@ -70,7 +70,7 @@ class UserController extends Controller
         $user = $userRepo->update($id, $data);
 
         // Return a data response with the UserResource
-        return APIResponse::DataResponse(UserResource::make($user));
+        return APIResponse::UpdatedSuccessfully(UserResource::make($user));
     }
 
     /**

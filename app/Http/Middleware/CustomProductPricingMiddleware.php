@@ -13,9 +13,9 @@ class CustomProductPricingMiddleware
      * Handle an incoming request.
      * @param Request $request
      * @param Closure $next
-     * @return Response
+     * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         // Get the user type from the request
         $user_type = $request->user()->type;
