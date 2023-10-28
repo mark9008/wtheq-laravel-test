@@ -23,7 +23,7 @@ class AuthenticatedSessionController extends Controller
             $request->authenticate();
 
             // get the authenticated user
-            $user = $request->user('api');
+            $user = $request->user();
 
             // check if the user is active
             if (!$user->is_active)

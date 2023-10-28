@@ -79,6 +79,12 @@ class ProductController extends Controller
         // get validated data
         $productData = $request->validated();
 
+        // Check if image is uploaded
+        if (isset($productData['image'])) {
+            // Store avatar in storage/public/avatars folder and return its path
+            $productData['image'] = $productData['image']->store('products', 'public');
+        }
+
         //create productRepository instance and update product
         $productRepo = new ProductRepository();
         $product = $productRepo->update($id, $productData);

@@ -22,7 +22,7 @@ class UserObserver
             // check if old avatar path is not empty
             if (!empty($old_avatar)) {
                 // get old avatar path
-                $old_avatar_path = asset('storage/' . $old_avatar);
+                $old_avatar_path = public_path('storage/' . $old_avatar);
 
                 // check if old avatar file exists
                 if (file_exists($old_avatar_path)) {
@@ -47,7 +47,7 @@ class UserObserver
         // check if user has avatar
         if (!empty($avatar)) {
             // get avatar path
-            $avatar_path = asset('storage/' . $avatar);
+            $avatar_path = public_path('storage/' . $avatar);
             // check if avatar file exists
             if (file_exists($avatar_path)) {
                 // delete avatar file

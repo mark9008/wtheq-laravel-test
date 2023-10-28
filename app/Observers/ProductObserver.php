@@ -22,7 +22,7 @@ class ProductObserver
             // check if old image path is not empty
             if (!empty($old_image)) {
                 // get old image path
-                $old_image_path = asset('storage/' . $old_image);
+                $old_image_path = public_path('storage/' . $old_image);
 
                 // check if old image file exists
                 if (file_exists($old_image_path)) {
@@ -47,7 +47,7 @@ class ProductObserver
         // check if product has image
         if (!empty($image)) {
             // get image path
-            $image_path = asset('storage/' . $image);
+            $image_path = public_path('storage/' . $image);
             // check if image file exists
             if (file_exists($image_path)) {
                 // delete image file
