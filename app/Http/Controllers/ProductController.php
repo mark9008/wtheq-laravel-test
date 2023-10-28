@@ -19,8 +19,8 @@ class ProductController extends Controller
         $active_only = $request->query('active_only', true);
 
         // get products from repository
-        $productRepository = new ProductRepository();
-        $products = $productRepository->list($active_only);
+        $productRepo = new ProductRepository();
+        $products = $productRepo->list($active_only);
 
         // return products
         return APIResponse::DataResponse(ProductResource::collection($products));
@@ -33,11 +33,11 @@ class ProductController extends Controller
         $id = (int)$id;
 
         // Get product from the repository
-        $productRepository = new ProductRepository();
-        $product = $productRepository->get($id);
+        $productRepo = new ProductRepository();
+        $product = $productRepo->get($id);
 
         // Return a data response with the ProductResource
-        return APIResponse::DataResponse(new ProductResource($product));
+        return APIResponse::DataResponse(ProductResource::make($product));
 
     }
 
@@ -50,8 +50,8 @@ class ProductController extends Controller
         $idsArray = explode(',', $ids);
 
         // Get products from the repository
-        $productRepository = new ProductRepository();
-        $products = $productRepository->searchByIds($idsArray);
+        $productRepo = new ProductRepository();
+        $products = $productRepo->searchByIds($idsArray);
 
         // Return a data response with the ProductResource collection
         return APIResponse::DataResponse(ProductResource::collection($products));
@@ -64,11 +64,11 @@ class ProductController extends Controller
         $productData = $request->validated();
 
         // Create productRepository instance and create product
-        $productRepository = new ProductRepository();
-        $createdProduct = $productRepository->create($productData);
+        $productRepo = new ProductRepository();
+        $createdProduct = $productRepo->create($productData);
 
         // Return a data response with the created product
-        return APIResponse::DataResponse(new ProductResource($createdProduct));
+        return APIResponse::DataResponse(ProductResource::make($createdProduct));
     }
 
 
@@ -80,11 +80,11 @@ class ProductController extends Controller
         $productData = $request->validated();
 
         //create productRepository instance and update product
-        $productRepository = new ProductRepository();
-        $product = $productRepository->update($id, $productData);
+        $productRepo = new ProductRepository();
+        $product = $productRepo->update($id, $productData);
 
         // return a data response with the updated product
-        return APIResponse::DataResponse(new ProductResource($product));
+        return APIResponse::DataResponse(ProductResource::make($product));
     }
 
     public function destroy($id): JsonResponse
@@ -101,13 +101,14 @@ class ProductController extends Controller
         $id = (int)$id;
 
         // create productRepository instance and delete product
-        $productRepository = new ProductRepository();
-        $deleted = $productRepository->delete($id);
+        $productRepo = new ProductRepository();
+        $deleted = $productRepo->delete($id);
 
         if ($deleted) {
             // return success response if product deleted successfully
             return APIResponse::SuccessResponse('Product deleted successfully');
         }
+
         // return error response if product not deleted
         return APIResponse::ErrorsResponse('Error deleting product', '', status: Response::HTTP_INTERNAL_SERVER_ERROR);
     }

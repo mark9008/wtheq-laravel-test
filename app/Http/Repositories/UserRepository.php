@@ -94,7 +94,7 @@ class UserRepository
     public function delete(int $id): bool
     {
         $this->set($id);
-        return $this->user->update(['is_active' => false]);
+        return $this->user->delete();
     }
 
     /**
