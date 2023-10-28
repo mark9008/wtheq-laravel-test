@@ -4,10 +4,17 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 
 class CustomProductPricingMiddleware
 {
+    /**
+     * Handle an incoming request.
+     * @param Request $request
+     * @param Closure $next
+     * @return Response
+     */
     public function handle(Request $request, Closure $next)
     {
         // Get the user type from the request

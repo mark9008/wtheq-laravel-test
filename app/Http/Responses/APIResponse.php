@@ -6,10 +6,17 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Throwable;
-
+/**
+ * Class APIResponse
+ * used to handle all API responses
+ *
+ * @package App\Http\Responses
+ */
 class APIResponse
 {
+
     public static function LoginResponse($token, User $user, array $headers = []): JsonResponse
     {
         return Response()->json([
@@ -29,7 +36,7 @@ class APIResponse
         ], 200)->withHeaders($headers);
     }
 
-    public static function ErrorsResponse(string $title, string $detail, throwable $exception = null, int $status = 422, array $headers = [], $logError = false): JsonResponse
+    public static function ErrorsResponse(string $title, string $detail, throwable $exception = null, int $status = Response::HTTP_BAD_REQUEST, array $headers = [], $logError = false): JsonResponse
     {
         if ($logError)
             if ($exception?->getCode() === 0 && !$exception instanceof ModelNotFoundException)

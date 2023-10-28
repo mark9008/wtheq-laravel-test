@@ -102,7 +102,7 @@ class UserController extends Controller
         }
 
         // return error response if user not deleted
-        return APIResponse::ErrorsResponse('Error deleting user', '', status: 500);
+        return APIResponse::ErrorsResponse('Error deleting user', '');
     }
 
     /**

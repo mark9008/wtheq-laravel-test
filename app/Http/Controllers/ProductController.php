@@ -13,6 +13,11 @@ use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
+    /**
+     * Display a list of the products.
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function index(Request $request): JsonResponse
     {
         // get active_only query parameter
@@ -27,7 +32,12 @@ class ProductController extends Controller
 
     }
 
-    public function show($id): JsonResponse
+    /**
+     * Display the specified product.
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function show(string $id): JsonResponse
     {
         // Cast id to integer
         $id = (int)$id;
@@ -41,6 +51,11 @@ class ProductController extends Controller
 
     }
 
+    /**
+     * Search products by ids.
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function searchByIds(Request $request): JsonResponse
     {
         // Get the 'ids' query parameter and default to an empty string
@@ -58,6 +73,11 @@ class ProductController extends Controller
 
     }
 
+    /**
+     * Search products by name.
+     * @param CreateProductRequest $request
+     * @return JsonResponse
+     */
     public function store(CreateProductRequest $request): JsonResponse
     {
         // Get validated data
@@ -71,8 +91,13 @@ class ProductController extends Controller
         return APIResponse::DataResponse(ProductResource::make($createdProduct));
     }
 
-
-    public function update($id, EditProductRequest $request): JsonResponse
+    /**
+     * Update the specified product.
+     * @param string $id
+     * @param EditProductRequest $request
+     * @return JsonResponse
+     */
+    public function update(string $id, EditProductRequest $request): JsonResponse
     {
         // cast id to integer
         $id = (int)$id;
@@ -93,6 +118,11 @@ class ProductController extends Controller
         return APIResponse::DataResponse(ProductResource::make($product));
     }
 
+    /**
+     * delete the specified product by id.
+     * @param string $id
+     * @return JsonResponse
+     */
     public function destroy($id): JsonResponse
     {
         // get authenticated user type
@@ -103,6 +133,7 @@ class ProductController extends Controller
             // return error response with 403 status code (Forbidden)
             return APIResponse::ErrorsResponse('You are not allowed to delete products', '', status: Response::HTTP_FORBIDDEN);
         }
+
         // cast id to integer
         $id = (int)$id;
 
@@ -116,6 +147,6 @@ class ProductController extends Controller
         }
 
         // return error response if product not deleted
-        return APIResponse::ErrorsResponse('Error deleting product', '', status: Response::HTTP_INTERNAL_SERVER_ERROR);
+        return APIResponse::ErrorsResponse('Error deleting product', '');
     }
 }
