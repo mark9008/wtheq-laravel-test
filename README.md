@@ -80,12 +80,11 @@ This project is a Laravel-based API that provides user registration, login, and 
 - Endpoint: `/api/auth/register`
 
 - Example Request:
- ```http request
-<pre>
+ ```
     POST /api/auth/register
     Content-Type: application/json
     accept: application/json
-</pre>
+    
     {
         "name":"Mark",
         "email":"mark@example.com",
@@ -99,7 +98,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 - Endpoint: `/api/auth/login`
 - Example Request:
- ```http request
+ ```
     POST /api/auth/login
     Content-Type: application/json
     accept: application/json
@@ -114,7 +113,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 - Endpoint: `/api/auth/logout`
 - Example Request:
- ```http request
+ ```
     POST /api/auth/logout
     accept: application/json
 ```
@@ -123,7 +122,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 - Endpoint: `/api/auth/refresh-token`
 - Example Request:
- ```http request
+ ```
     POST /api/auth/refresh-token
     accept: application/json
 ```
@@ -135,7 +134,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 - Endpoint: `/api/profile/list`
 - Query Parameters: `active_only` (optional, boolean): Filter the list to include only active user profiles. Set to `0` to include both active and inactive profiles. Set to `1` to include only active profiles. If it is not provided the response will only contain active profiles.
 - Example Request:
- ```http request
+ ```
     GET /api/profile/list?active_only=0
     accept: application/json
 ```
@@ -144,7 +143,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 - Endpoint: `/api/profile/user`
 - Example Request:
- ```http request
+ ```
     GET /api/profile/user
     accept: application/json
 ```
@@ -153,7 +152,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 - Endpoint: `/api/profile/{type}/list`
 - Example Request:
- ```http request
+ ```
     GET /api/profile/normal/list
     accept: application/json
 ```
@@ -162,7 +161,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 - Endpoint: `/api/profile/update`
 - Example Request:
- ```http request
+ ```
     POST /api/profile/update
     Content-Type: multipart/form-data
     accept: application/json
@@ -178,7 +177,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 - Endpoint: `/api/profile/{id}/delete`
 - Example Request:
- ```http request
+ ```
     DELETE /api/profile/1/delete
     accept: application/json
 ```
@@ -190,7 +189,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 - Endpoint: `/api/products/list`
 - Query Parameters: `active_only` (optional, boolean): Filter the list to include only active products. Set to `0` to include both active and inactive products. Set to `1` to include only active products. If it is not provided the response will only contain active products.
 - Example Request:
- ```http request
+ ```
     GET /api/products/list?active_only=0
     accept: application/json
 ```
@@ -199,7 +198,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 - Endpoint: `/api/products/{id}/get`
 - Example Request:
- ```http request
+ ```
     GET /api/products/1/get
     accept: application/json
 ```
@@ -209,7 +208,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 - Endpoint: `/api/products/search`
 - Query Parameters: `ids` (required, array): An array of product IDs.
 - Example Request:
- ```http request
+ ```
     GET /api/products/search?ids=1,2,3
     accept: application/json
 ```
@@ -218,7 +217,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 - Endpoint: `/api/products/create`
 - Example Request:
- ```http request
+ ```
     POST /api/products/create
     Content-Type: multipart/form-data
     accept: application/json
@@ -236,7 +235,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 - Endpoint: `/api/products/{id}/update`
 - Example Request:
- ```http request
+ ```
     POST /api/products/1/update
     Content-Type: multipart/form-data
     accept: application/json
@@ -254,7 +253,7 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 - Endpoint: `/api/products/{id}/delete`
 - Example Request:
- ```http request
+ ```
     DELETE /api/products/1/delete
     accept: application/json
 ```
