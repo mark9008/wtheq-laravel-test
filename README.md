@@ -1,5 +1,35 @@
 # wtheq-laravel-test
 
+## Table of Contents
+- [Introduction](#introduction)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+    - [Authentication](#authentication)
+        - [User Registration](#user-registration)
+        - [User Login](#user-login)
+        - [User Logout](#user-logout)
+        - [Refresh Token](#refresh-token)
+    - [Users](#users)
+        - [Get All Users](#get-all-users)
+        - [Get User Profile](#get-user-profile)
+        - [Get User Profiles by Type](#get-user-profiles-by-type)
+        - [Update User Profile](#update-user-profile)
+        - [Delete User Profile](#delete-user-profile)
+    - [Products](#products)
+        - [Get All Products](#get-all-products)
+        - [Get Product](#get-product)
+        - [Get Products by IDs](#get-products-by-ids)
+        - [Create Product](#create-product)
+        - [Update Product](#update-product)
+        - [Delete Product](#delete-product)
+- [Pricing Logic](#pricing-logic)
+- [Repository Pattern](#repository-pattern)
+- [Custom Pricing Middleware](#custom-pricing-middleware)
+- [Authors](#authors)
+- [References](#references)
+
 ## Introduction
 This project is a Laravel-based API that provides user registration, login, and CRUD operations for managing users and products. It also implements custom pricing logic based on user types.
 
