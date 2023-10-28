@@ -73,6 +73,11 @@ This project is a Laravel-based API that provides user registration, login, and 
 
 # Usage
 
+## ALL REQUESTS MUST HAVE THE FOLLOWING HEADER:
+```
+accept: application/json
+```
+
 ## Testing the API
 
 To simplify the testing of the API, you can use the provided Postman collection and [Swagger documentation](/swagger.yaml).
@@ -292,7 +297,7 @@ I have implemented the repository design pattern in this project to separate dat
 
 ## Custom Pricing Middleware
 
-I have implemented a custom middleware to apply the pricing logic to the product prices. It is registered in the `Kernel.php` file in the `app/Http` directory. It edits the response returned by the API to apply the pricing logic to the product prices based on the user type.
+I have implemented a custom middleware to apply the pricing logic to the product prices. It is registered in the `Kernel.php` file in the `app/Http` directory. It edits the response returned by the API to apply the pricing logic to the product prices based on the user type. You can find it [here](/app/Http/Middleware/CustomProductPricingMiddleware.php).
 
 ## Authors
 
