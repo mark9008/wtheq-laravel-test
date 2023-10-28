@@ -1,5 +1,22 @@
 <?php
 
+/**
+ * CustomProductPricingMiddleware
+ * This file requires custom_pricing.php config file to be present in config directory
+ * It should contain an associative array with user types as keys and discount values as values
+ * The discount values should be between 0 and 1
+ * The middleware will apply the discount to the price of the product
+ * The middleware will add a 'discount' field to the response
+ * The middleware will add an 'original_price' field to the response
+ * @example array:
+ * [
+ * 'gold' => 10,  // 10% discount for gold users
+ * 'silver' => 5,  // 5% discount for silver users
+ * 'normal' => 0,  // no discount for normal users
+ * ]
+ *
+ */
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -62,15 +79,11 @@ class CustomProductPricingMiddleware
         // Set the original price
         $data['original_price'] = $data['price'];
 
-        if ($user_type === 'gold') {
-            $data['price'] *= 0.9; // 10% discount for gold users
-            $data['discount'] = '10%'; // add discount field to the response
-        } elseif ($user_type === 'silver') {
-            $data['price'] *= 0.95; // 5% discount for silver users
-            $data['discount'] = '5%'; // add discount field to the response
-        } else {
-            $data['discount'] = '0%'; // add discount field to the response
-        }
+        $discount = config('custom_pricing.' . $user_type, 1.0);
+
+        $data['price'] *= (100-$discount)/100; // apply discount
+        $data['discount'] = str($discount).'%'; // add discount field to the response
+
         return $data;
     }
 }
