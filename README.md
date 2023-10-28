@@ -170,7 +170,7 @@ This project is a Laravel-based API that provides user registration, login, and 
         "name":"new name",
         "type":"", // normal, gold, silver
         "avatar":"image.jpg" // file
-        }
+    }
  ```
 
 ### Delete User Profile
