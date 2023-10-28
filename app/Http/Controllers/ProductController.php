@@ -9,6 +9,7 @@ use App\Http\Resources\ProductResource;
 use App\Http\Responses\APIResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
@@ -16,8 +17,11 @@ class ProductController extends Controller
     {
         // get active_only query parameter
         $active_only = $request->query('active_only', true);
+
         // get products from repository
-        $products = (new ProductRepository())->list($active_only);
+        $productRepository = new ProductRepository();
+        $products = $productRepository->list($active_only);
+
         // return products
         return APIResponse::DataResponse(ProductResource::collection($products));
 
@@ -25,46 +29,86 @@ class ProductController extends Controller
 
     public function show($id): JsonResponse
     {
-        // cast id to integer
+        // Cast id to integer
         $id = (int)$id;
-        // get product from repository
-        $product = (new ProductRepository())->get($id);
-        // return product
+
+        // Get product from the repository
+        $productRepository = new ProductRepository();
+        $product = $productRepository->get($id);
+
+        // Return a data response with the ProductResource
         return APIResponse::DataResponse(new ProductResource($product));
+
     }
 
     public function searchByIds(Request $request): JsonResponse
     {
-        // get ids query parameter
+        // Get the 'ids' query parameter and default to an empty string
         $ids = $request->query('ids', '');
-        // get ids array
-        $ids = explode(',', $ids);
-        // get products from repository
-        $products = (new ProductRepository())->searchByIds($ids);
-        // return products
+
+        // Explode the comma-separated ids into an array
+        $idsArray = explode(',', $ids);
+
+        // Get products from the repository
+        $productRepository = new ProductRepository();
+        $products = $productRepository->searchByIds($idsArray);
+
+        // Return a data response with the ProductResource collection
         return APIResponse::DataResponse(ProductResource::collection($products));
+
     }
 
     public function store(CreateProductRequest $request): JsonResponse
     {
-        $product = (new ProductRepository())->create($request->validated());
-        return APIResponse::DataResponse(new ProductResource($product));
+        // Get validated data
+        $productData = $request->validated();
+
+        // Create productRepository instance and create product
+        $productRepository = new ProductRepository();
+        $createdProduct = $productRepository->create($productData);
+
+        // Return a data response with the created product
+        return APIResponse::DataResponse(new ProductResource($createdProduct));
     }
+
 
     public function update($id, EditProductRequest $request): JsonResponse
     {
+        // cast id to integer
         $id = (int)$id;
-        $product = (new ProductRepository())->update($id, $request->validated());
+        // get validated data
+        $productData = $request->validated();
+
+        //create productRepository instance and update product
+        $productRepository = new ProductRepository();
+        $product = $productRepository->update($id, $productData);
+
+        // return a data response with the updated product
         return APIResponse::DataResponse(new ProductResource($product));
     }
 
     public function destroy($id): JsonResponse
     {
-        if (auth('api')->user()->type != 'gold')
-            return APIResponse::ErrorsResponse('You are not allowed to delete products', '', status: 403);
+        // get authenticated user type
+        $userType = auth('api')->user()->type;
+
+        // check if user type is not gold
+        if ($userType != 'gold') {
+            // return error response with 403 status code (Forbidden)
+            return APIResponse::ErrorsResponse('You are not allowed to delete products', '', status: Response::HTTP_FORBIDDEN);
+        }
+        // cast id to integer
         $id = (int)$id;
-        if ((new ProductRepository())->delete($id))
+
+        // create productRepository instance and delete product
+        $productRepository = new ProductRepository();
+        $deleted = $productRepository->delete($id);
+
+        if ($deleted) {
+            // return success response if product deleted successfully
             return APIResponse::SuccessResponse('Product deleted successfully');
-        return APIResponse::ErrorsResponse('Error deleting product', '', status: 500);
+        }
+        // return error response if product not deleted
+        return APIResponse::ErrorsResponse('Error deleting product', '', status: Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
