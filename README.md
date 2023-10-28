@@ -60,7 +60,7 @@ This project is a Laravel-based API that provides user registration, login, and 
     ```
 4. Create a copy of the .env.example file and rename it to .env:
     ```shell
-    cp .env.example .env
+    cp .env.local .env
     ```
 5. Run migrations:
     ```shell
