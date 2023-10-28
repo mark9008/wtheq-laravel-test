@@ -6,6 +6,10 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class EditProductRequest extends FormRequest
 {
+    /**
+     * Get the validation rules that apply to the request.
+     * @return array<string, Rule|array|string>
+     */
     public function rules(): array
     {
         return [
@@ -13,15 +17,23 @@ class EditProductRequest extends FormRequest
             'description' => ['nullable'],
             'image' => ['nullable', 'image', 'max:1024'],
             'price' => ['required', 'numeric'],
-            'is_active'=> ['nullable', 'boolean'],
+            'is_active' => ['nullable', 'boolean'],
         ];
     }
 
+    /**
+     * Determine if the user is authorized to make this request.
+     * @return bool
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * Get the validation messages that apply to the request.
+     * @return array<string, string>
+     */
     public function messages()
     {
         return [

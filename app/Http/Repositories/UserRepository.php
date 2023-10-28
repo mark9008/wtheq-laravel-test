@@ -19,12 +19,16 @@ class UserRepository
      */
     public function list($active = true)
     {
+        // Create a query builder instance
         $query = User::query();
 
+        // If active is true, only active users will be returned
         if ($active) {
+            // Add where clause to the query to apply the filter
             $query->where('is_active', true);
         }
 
+        // Return the query result
         return $query->get();
     }
 
@@ -63,6 +67,7 @@ class UserRepository
      */
     public function create(string $email, string $name, string $password, bool $is_active = true, string $type = "normal"): User
     {
+        // Create a new user or get the existing one to avoid duplicate email registration
         return User::firstOrCreate(['email' => $email], [
             'email' => $email,
             'name' => $name,
@@ -100,7 +105,7 @@ class UserRepository
     /**
      * Search by User Type
      * @param string $type
-     * @param bool $active  // if true, only active users will be returned
+     * @param bool $active // if true, only active users will be returned
      */
     public function searchByType(string $type, bool $active = true)
     {

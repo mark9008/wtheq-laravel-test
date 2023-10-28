@@ -3,9 +3,15 @@
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RegisterRequest extends FormRequest
 {
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, Rule|array|string>
+     */
     public function rules(): array
     {
         return [
@@ -17,6 +23,11 @@ class RegisterRequest extends FormRequest
         ];
     }
 
+    /**
+     * Get the validation messages that apply to the request.
+     *
+     * @return array<string, string>
+     */
     public function messages()
     {
         return [

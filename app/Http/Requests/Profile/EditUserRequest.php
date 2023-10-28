@@ -3,9 +3,14 @@
 namespace App\Http\Requests\Profile;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class EditUserRequest extends FormRequest
 {
+    /**
+     * Get the validation rules that apply to the request.
+     * @return array<string, Rule|array|string>
+     */
     public function rules(): array
     {
         return [
@@ -15,11 +20,21 @@ class EditUserRequest extends FormRequest
         ];
     }
 
+
+    /**
+     * Determine if the user is authorized to make this request.
+     * @return bool
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+
+    /**
+     * Get the validation messages that apply to the request.
+     * @return array<string, string>
+     */
     public function messages()
     {
         return [

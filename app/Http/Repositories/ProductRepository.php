@@ -16,12 +16,16 @@ class ProductRepository
      */
     public function list(bool $active = true)
     {
+        // Create a query builder instance
         $query = Product::query();
 
+        // If active is true, only active products will be returned
         if ($active) {
+            // Add where clause to the query to apply the filter
             $query->where('is_active', true);
         }
 
+        // Return the query result
         return $query->get();
     }
 
@@ -40,6 +44,7 @@ class ProductRepository
      */
     public function searchByIds(array $ids)
     {
+        // apply filter to the products by ids
         return Product::whereIn('id', $ids)->get();
     }
 
@@ -49,8 +54,12 @@ class ProductRepository
      */
     public function set(int $id): Product
     {
-        if (empty($this->product) || $id != $this->product->id)
+        // If the product is not set or the id is not the same as the product id
+        if (empty($this->product) || $id != $this->product->id) {
+            // use find or fail to get the product by id or throw an exception
             $this->product = Product::findOrFail($id);
+        }
+        // return the product
         return $this->product;
     }
 
