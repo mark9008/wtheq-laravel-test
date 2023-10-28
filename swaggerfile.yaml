@@ -1,0 +1,374 @@
+  openapi: 3.0.0
+  info:
+    title: Wtheq-laravel-test
+    version: 1.0.0
+  servers:
+    - url: http://127.0.0.1:8000
+  components:
+    securitySchemes:
+      noauthAuth:
+        type: http
+        scheme: noauth
+      bearerAuth:
+        type: http
+        scheme: bearer
+  security:
+    - bearerAuth: []
+  tags:
+    - name: Authentication
+    - name: Users
+    - name: Products
+  paths:
+    /api/auth/signup:
+      post:
+        tags:
+          - Authentication
+        summary: Register
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  name: Mark
+                  email: mark.samuel.shawki@gmail.com
+                  password: password
+                  password_confirmation: password
+                  is_active: 'false'
+                  type: normal
+        security:
+          - noauthAuth: []
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/auth/logout:
+      post:
+        tags:
+          - Authentication
+        summary: Logout
+        requestBody:
+          content: {}
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/auth/login:
+      post:
+        tags:
+          - Authentication
+        summary: Login
+        requestBody:
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Mark
+                  email:
+                    type: string
+                    example: mark.samuel.shawki@gmail.com
+                  password:
+                    type: string
+                    example: password
+                  password_confirmation:
+                    type: string
+                    example: password
+        security:
+          - noauthAuth: []
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/auth/refresh-token:
+      get:
+        tags:
+          - Authentication
+        summary: Refresh Token
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/profile/user:
+      get:
+        tags:
+          - Users
+        summary: Get User
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/profile/list:
+      get:
+        tags:
+          - Users
+        summary: List Users
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+          - name: active_only
+            in: query
+            schema:
+              type: integer
+            example: '0'
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/profile/silver/list:
+      get:
+        tags:
+          - Users
+        summary: List Users By Type
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+          - name: active_only
+            in: query
+            schema:
+              type: integer
+            example: '0'
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/profile/update:
+      post:
+        tags:
+          - Users
+        summary: Update User
+        requestBody:
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Mark S
+                  type:
+                    type: string
+                    example: silver
+                  avatar:
+                    type: string
+                    format: binary
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/profile/1/delete:
+      delete:
+        tags:
+          - Users
+        summary: Delete User
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/products/2/get:
+      get:
+        tags:
+          - Products
+        summary: Get Product
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/products/list:
+      get:
+        tags:
+          - Products
+        summary: List Products
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+          - name: active_only
+            in: query
+            schema:
+              type: integer
+            example: '0'
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/products/search:
+      get:
+        tags:
+          - Products
+        summary: List Products by IDs
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+          - name: ids
+            in: query
+            schema:
+              type: string
+            example: 1,2
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/products/create:
+      post:
+        tags:
+          - Products
+        summary: Create Product
+        requestBody:
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Rice and ice
+                  description:
+                    type: string
+                    example: test
+                  image:
+                    type: string
+                    format: binary
+                  price:
+                    type: integer
+                    example: '675'
+                  is_active:
+                    type: integer
+                    example: '0'
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/products/1/update:
+      post:
+        tags:
+          - Products
+        summary: Update Product
+        requestBody:
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Rice and ICE
+                  description:
+                    type: string
+                  image:
+                    type: string
+                    format: binary
+                  price:
+                    type: integer
+                    example: '500'
+                  is_active:
+                    type: integer
+                    example: '1'
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    /api/products/2/delete:
+      delete:
+        tags:
+          - Products
+        summary: Delete Product
+        parameters:
+          - name: Accept
+            in: header
+            schema:
+              type: string
+            example: application/json
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+
