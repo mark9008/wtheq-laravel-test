@@ -62,7 +62,7 @@ This project is a Laravel-based API that provides user registration, login, and 
     ```shell
     cp .env.local .env
     ```
-5. Run migrations:
+5. Run migrations (write `yes` when prompted):
     ```shell
     php artisan migrate
     ```
