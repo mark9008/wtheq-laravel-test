@@ -25,16 +25,23 @@ class ProductController extends Controller
 
     public function show($id): JsonResponse
     {
+        // cast id to integer
         $id = (int)$id;
+        // get product from repository
         $product = (new ProductRepository())->get($id);
+        // return product
         return APIResponse::DataResponse(new ProductResource($product));
     }
 
     public function searchByIds(Request $request): JsonResponse
     {
+        // get ids query parameter
         $ids = $request->query('ids', '');
+        // get ids array
         $ids = explode(',', $ids);
+        // get products from repository
         $products = (new ProductRepository())->searchByIds($ids);
+        // return products
         return APIResponse::DataResponse(ProductResource::collection($products));
     }
 

@@ -7,34 +7,35 @@ use App\Http\Repositories\UserRepository;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Responses\APIResponse;
 use App\Http\Resources\UserResource;
-use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 
 class RegisteredUserController extends Controller
 {
     /**
      * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * @param RegisterRequest $request
+     * @return JsonResponse
      */
     public function signup(RegisterRequest $request): JsonResponse
     {
-//        return APIResponse::SuccessResponse('User Registered successfully, Confirmation mail has been sent');
+        // get validated data
         $data = $request->validated();
 
+        // create user
         $user = (new UserRepository())->create(
             $data['email'],
             $data['name'],
             $data['password'],
             $data['is_active'],
-            $data['type']);
+            $data['type']
+        );
 
-
+        // fire registered event
         event(new Registered($user));
 
+        // return created successfully response
         return APIResponse::CreatedSuccessfully(UserResource::make($user), 'User Registered successfully');
     }
 }
